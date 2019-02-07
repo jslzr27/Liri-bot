@@ -35,6 +35,8 @@ do-what-it-says
 	* Venue location
 	* Date of the Event
 
+	![](concert.gif)
+
 * Command Two: node liri.js spotify-this-song ```<song name here>```.
 	
 	This will show the following information about the song in your terminal/bash window: 

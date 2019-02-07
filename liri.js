@@ -9,11 +9,13 @@ var inputs = input[3];
 var request = require("request");
 var fs = require('fs');
 var axios = require("axios");
+var moment = require("moment");
+var chalk = require("chalk");
 
 function commands(action, inputs){
 	switch (action) {
 		case "concert-this":
-		bands(inputs);
+		concertThis(inputs);
 		break;
 
 		case "spotify-this-song":
@@ -29,34 +31,30 @@ function commands(action, inputs){
 		break;
 	}
 }
-function bands(inputs) {
 
-	var queryUrl = "https://rest.bandsintown.com/artists/" + inputs + "?app_id=codingbootcamp";
-
-    axios.get(queryUrl).then( function (response) {
-        // console.log("Venue: " + JSON.parse(body).response);
-		// console.log("Location: " + JSON.parse(body).Year);
-        // console.log("Date: " + JSON.parse(body).date);
-        console.log(response);
-
-        var artistName;
-        var venueName;
-        var venueLocation;
-        var eventDate;
-    })
-    
-	// request(queryUrl, function(error, response, body) {
-	// 	if (!inputs){
-    //     	console.log('Please type an artist');
-    // 	}
-	// 	if (!error && response.statusCode === 200) {
-
-	// 	    console.log("Venue: " + JSON.parse(body).Title);
-	// 	    console.log("Location: " + JSON.parse(body).Year);
-	// 	    console.log("Date: " + JSON.parse(body).date);
-	// 	}
-	// });
-};
+function concertThis(inputs) {
+    request("https://rest.bandsintown.com/artists/" + inputs + "/events?app_id=codingbootcamp", function (error, response, data) {
+		
+		if(error) {
+			console.log(chalk.red("No concerts found."));
+		}else{
+            var response = JSON.parse(data)
+            if (response.length != 0) {
+                console.log(chalk.green(`Upcoming concerts for ${inputs} include: `))
+                response.forEach(function (element) {
+					console.log(chalk.blue("Venue name: " + element.venue.name));
+                    if (element.venue.country == "United States") {
+                        console.log("City: " + element.venue.city + ", " + element.venue.region);
+                    } else {
+                        console.log("City: " + element.venue.city + ", " + element.venue.country);
+                    }
+                    console.log("Date: " + moment(element.datetime).format('MM/DD/YYYY'));
+                    console.log();
+                })
+			} 
+        }
+    });
+}
 
 function Spotify(inputs) {
     var spotify = new Spotify(keys.spotify);
