@@ -57,9 +57,12 @@ do-what-it-says
 	* Language of the movie.
 	* Plot of the movie.
 	* Actors in the movie.
+
+	![](movie.gif)
 	
 	If no movie is typed, the program will output data for the movie 'Mr Nobody.'
 
+	![](mr-nobody.gif)
 * Command Four: node liri.js do-what-it-says
 
 	This will output the command placed in random.txt file
