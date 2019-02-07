@@ -67,5 +67,7 @@ do-what-it-says
 
 	This will output the command placed in random.txt file
 
+	![](dowhat.gif)
+
 ## Author
 * **Jesus Salazar** 

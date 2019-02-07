@@ -10,24 +10,25 @@ var request = require("request");
 var fs = require('fs');
 var axios = require("axios");
 
-switch (action) {
-    case "concert-this":
-    bands(inputs);
-    break;
+function commands(action, inputs){
+	switch (action) {
+		case "concert-this":
+		bands(inputs);
+		break;
 
-    case "spotify-this-song":
-    Spotify(inputs);
-    break;
+		case "spotify-this-song":
+		Spotify(inputs);
+		break;
 
-    case "movie-this":
-    movie(inputs);
-    break;
+		case "movie-this":
+		movie(inputs);
+		break;
 
-    case "do-what-it-says":
-	doItsays();
-	break;
+		case "do-what-it-says":
+		doWhatItSays();
+		break;
+	}
 }
-
 function bands(inputs) {
 
 	var queryUrl = "https://rest.bandsintown.com/artists/" + inputs + "?app_id=codingbootcamp";
@@ -114,27 +115,17 @@ function movie(inputs) {
 	});
 };
 
-function doItsays() {
-	fs.readFile('random.txt', "utf8", function(error, data){
 
-		if (error) {
-    		return console.log(error);
-  		}
-        
-		// Then split it by commas (to make it more readable)
-		var dataArr = data.split(",");
+function doWhatItSays() {
+    fs.readFile("random.txt", "utf8", function (err, data) {
+        if (err) {
+            return console.log(err);
+		}
+		
+		var dataArr = data.split(',');
 
-		// Each command is represented. Because of the format in the txt file, remove the quotes to run these commands. 
-		if (dataArr[0] === "spotify-this-song") {
-			var songcheck = dataArr[1].slice(1, -1);
-			spotify(songcheck);
-		} else if (dataArr[0] === "my-tweets") {
-			var bandname = dataArr[1].slice(1, -1);
-			bands(bandname);
-		} else if(dataArr[0] === "movie-this") {
-			var movie_name = dataArr[1].slice(1, -1);
-			movie(movie_name);
-		} 
-  	});
+		commands(dataArr[0], dataArr[1]);
+    })
+}
 
-};
+commands(action, inputs);
