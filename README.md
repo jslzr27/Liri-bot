@@ -17,10 +17,13 @@ do-what-it-says
 
 ## Technologies used:
 
-* Node.js 
-![Node Logo](node.png)
-* Javascript
-![Javascript Logo](javascript.png)
+* Node.js <br>
+
+![Node Logo](node.png) <br>
+
+* Javascript <br>
+
+![Javascript Logo](javascript.png) <br>
 
 ## npm packages: 
 * [axios](https://www.npmjs.com/package/axios) - Promise based HTTP client for the browser and node.js
