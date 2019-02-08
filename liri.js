@@ -2,7 +2,7 @@ require("dotenv").config();
 
 var keys = require("./keys.js");
 
-var spotify = require("node-spotify-api");
+var Spotify = require("node-spotify-api");
 var input = process.argv;
 var action = input[2];
 var inputs = input[3];
@@ -12,6 +12,8 @@ var axios = require("axios");
 var moment = require("moment");
 var chalk = require("chalk");
 
+//Function used to decide what to do in each command instance
+
 function commands(action, inputs){
 	switch (action) {
 		case "concert-this":
@@ -19,7 +21,7 @@ function commands(action, inputs){
 		break;
 
 		case "spotify-this-song":
-		Spotify(inputs);
+		spotify(inputs);
 		break;
 
 		case "movie-this":
@@ -31,6 +33,8 @@ function commands(action, inputs){
 		break;
 	}
 }
+
+//Function that displays concert information based on command input for an artist
 
 function concertThis(inputs) {
     request("https://rest.bandsintown.com/artists/" + inputs + "/events?app_id=codingbootcamp", function (error, response, data) {
@@ -56,41 +60,30 @@ function concertThis(inputs) {
     });
 }
 
-function Spotify(inputs) {
-    var spotify = new Spotify(keys.spotify);
-    // spotify
-    // .search({ type: 'track', query: inputs, limit: 10 })
-    // .then(function(response) {
-    //     console.log(response);
-    // })
-    // .catch(function(err) {
-    //     console.log(err);
-    // });
-    // if(!inputs){
-    //     inputs = "The Sign"
-    // }
-    spotify.search({
-		type: "track", 
-		query: inputs, 
-		limit: 3, 
-		},
-		function (err, data) {
-			if(err){
-			return console.log(err);
-			}
-			if(inputs === ""){
-				inputs = "The Sign";
-				console.log(data);
-			}
-			var song = data.tracks.items;
-	        console.log("Artist(s): " + song[0].artists[0].name);
-	        console.log("Song Name: " + song[0].name);
-	        console.log("Preview Link: " + song[0].preview_url);
-	        console.log("Album: " + song[0].album.name);
-		})
+function spotify(inputs) {
+	var spotify = new Spotify(keys.spotify);
+	if(inputs === ""){
+		inputs = "The Sign";
+	}
+	spotify
+		.search({type: "track", query: inputs, limit: 1}).then( function (err, response) {
+				if(err){
+				return console.log(err);
+				}
+				var song = response.tracks.items[i];
+				console.log("----------Song Name----------");
+				console.log("Song Name: " + song.name);
+				console.log("------------Artist------------");
+				console.log("Artist(s): " + song.artists[0].name);
+				console.log("-----------Preview-----------");
+				console.log("Preview Link: " + song.preview_url);
+				console.log("----------Album Name----------");
+				console.log("Album: " + song.album.name);
+	});
+	
 }
 
-
+//Function that displays movie information based on the command input for a movie name
 
 function movie(inputs) {
 	inputs = typeof inputs !== 'undefined' ? inputs: "Mr Nobody";
@@ -113,6 +106,7 @@ function movie(inputs) {
 	});
 };
 
+//Function that takes the value from the text file and inputs it to the command line
 
 function doWhatItSays() {
     fs.readFile("random.txt", "utf8", function (err, data) {
