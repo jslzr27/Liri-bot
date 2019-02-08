@@ -61,7 +61,7 @@ function concertThis(inputs) {
 }
 
 function spotify(inputs) {
-	var spotify = new Spotify(keys.spotify);
+	var spotify = new Spotify(keys.spotifyKeys);
 	if(inputs === ""){
 		inputs = "The Sign";
 	}
